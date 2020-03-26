@@ -17,3 +17,9 @@ Directory structure:
 * /Controllers - Where your controllers go
 * /Models - Where your models go and extend the Model class
 * /Views - Where your frontend goes.
+
+--- 
+To do:
+
+- Split Router actions, each parameter needs its own method.
+- 

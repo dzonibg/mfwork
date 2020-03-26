@@ -10,6 +10,9 @@ class Router {
     private $method;
 
     public function route() {
+        /*
+        Calls the directing of traffic.
+        */
         $this->request = new Request();
         $this->uri = $this->trim($this->request->uri);
         $this->method = $this->request->method;
@@ -23,7 +26,13 @@ class Router {
 
     public function getParameters() //TODO Split into methods and add more checks!
     {
-        $parameters = explode('/', $this->uri);
+        $parameters = explode('/', $this->uri); //obtained the needed params, 0 is ctrl, 1 is action/method,
+        // 2 are the parameters.
+
+        $this->parameters = $parameters; // In work, should be the end of getParameters and call assignments.
+        // getController;
+        // getAction;
+        // getParameters;
 
         if ($parameters[0] == '') $this->controller = $this->findController('index');
 
@@ -53,6 +62,9 @@ class Router {
     }
 
     public function findController($string) {
+        /*
+        Method used to get a controller based on the URI.
+        */
         $string = ucfirst($string);
         $controller = $string . 'Controller';
         $this->controller = $controller;
@@ -60,6 +72,10 @@ class Router {
     }
 
     public function direct() {
+        /*
+        Main method used to direct traffic.
+        */
+
         $this->route();
 
         if ($GLOBALS['debug']) {
