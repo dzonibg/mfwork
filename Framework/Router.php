@@ -21,22 +21,32 @@ class Router {
         return trim($uri, '/');
     }
 
-    public function getParameters()
+    public function getParameters() //TODO Split into methods and add more checks!
     {
         $parameters = explode('/', $this->uri);
 
+        if ($parameters[0] == '') $this->controller = $this->findController('index');
+
         if ($parameters[0] != '') {
-            $this->controller = $parameters[0];
-        } else $this->controller = 'index';
+            $this->controller = $this->findController($parameters[0]);
+            if (!class_exists($this->controller)) {
+                $this->controller = "ErrorHandler";
+                $this->action = "classNotFound";
+            }
+        }
 
         if (isset($parameters[1])) {
-            $this->action = $parameters[1];
-        } else $this->action = 'index';
+            if (method_exists($this->controller, $parameters[1])) {
+                $this->action = $parameters[1];
+            } else {
+                $this->controller = "ErrorHandler";
+                $this->action = "methodNotFound";
+            }
+        } else  $this->action = 'index';
 
         if (isset($parameters[2])) {
             $this->parameters = $parameters[2];
         } else $this->parameters = '';
-//        var_dump($parameters);
 
 
     }
@@ -58,7 +68,7 @@ class Router {
             echo '<br>';
         }
 
-        $controller =  $this->findController($this->controller);
+        $controller =  $this->controller;
         $action = $this->action;
         $controller = new $controller;
         $controller->$action($this->parameters);

@@ -2,7 +2,7 @@
 
 function view($viewName, $data = [], $extra = []) {
     extract($data);
-    return require_once 'views/' . $viewName . '.view.php';
+    return require_once '../Views/' . $viewName . '.view.php';
 }
 
 function redirect($path) {

@@ -24,3 +24,10 @@ foreach (glob("../Controllers/*.php") as $filename)
     require_once($filename);
 }
 
+/*Load Models*/
+
+foreach (glob("../Models/*.php") as $filename)
+{
+    require_once($filename);
+}
+
