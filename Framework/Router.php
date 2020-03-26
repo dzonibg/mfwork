@@ -35,6 +35,7 @@ class Router {
             }
         }
 
+        $this->action = 'index';
         if (isset($parameters[1])) {
             if (method_exists($this->controller, $parameters[1])) {
                 $this->action = $parameters[1];
@@ -42,7 +43,7 @@ class Router {
                 $this->controller = "ErrorHandler";
                 $this->action = "methodNotFound";
             }
-        } else  $this->action = 'index';
+        }
 
         if (isset($parameters[2])) {
             $this->parameters = $parameters[2];
