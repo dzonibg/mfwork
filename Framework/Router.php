@@ -14,6 +14,9 @@ class Router {
     /* Router for the framework.
      * First a new Router instance is created for a request, then:
      * direct -> route -> getParameters | when finished, direct method uses the parameters and calls the ctrl+mthd.
+     *  direct calls route to get the method and parameters;
+     * route calls getParameters to get the name of controller, method and parameters
+     * after all of that, direct finishes it's job by calling the needed method and passes the arguments.
      */
 
     public function route() {
@@ -23,7 +26,7 @@ class Router {
         $this->request = new Request();
         $this->uri = $this->trim($this->request->uri);
         $this->method = $this->request->method;
-        $this->getParameters();
+        $this->getRoute();
     }
 
     public function trim($uri) {
@@ -33,12 +36,13 @@ class Router {
 
     public function getRoute() {
         $this->parameters = explode('/', $this->uri);
-        $this->controller = $this->getController();
-        $this->action = $this->getAction();
-        $this->params = $this->getParams();
+        $this->getController();
+        $this->getAction();
+        $this->getParams();
     }
 
-    public function getController() {
+    public function getController()
+    {
         if (class_exists($this->findController($this->parameters[0]))) {
             $this->controller = $this->findController($this->parameters[0]);
         } else if (!class_exists($this->findController($this->parameters[0]))) {
@@ -50,22 +54,25 @@ class Router {
         }
     }
 
+
     public function getAction() {
         if ($this->error != 1) {
-            if (method_exists($this->controller, $this->parameters[1])) {
-                $this->action = $this->parameters[1];
-            } else if (!method_exists($this->controller, $this->parameters[1])) {
-                $this->error = 1;
-                $this->action = "methodNotFound";
-            }
-        } else if ($this->parameters[1] == '') {
-            $this->action = 'index';
+            if (isset($this->parameters[1])) {
+                if (method_exists($this->controller, $this->parameters[1])) {
+                    $this->action = $this->parameters[1];
+                } else if (!method_exists($this->controller, $this->parameters[1])) {
+                    $this->error = 1;
+                    $this->action = "methodNotFound";
+                }
+            } else $this->action = 'index';
         }
     }
 
     public function getParams() {
-        if ($this->parameters[2] != '') {
-            $this->params = $this->parameters[2];
+        if (isset($this->parameters[2])) {
+            if ($this->parameters[2] != '') {
+                $this->params = $this->parameters[2];
+            }
         }
     }
 
@@ -126,8 +133,8 @@ class Router {
             echo '<br>';
         }
 
-        $controller =  $this->controller;
         $action = $this->action;
+        $controller = $this->controller;
         $controller = new $controller;
         $controller->$action($this->params);
     }
