@@ -45,12 +45,14 @@ class Router {
     {
         if (class_exists($this->findController($this->parameters[0]))) {
             $this->controller = $this->findController($this->parameters[0]);
-        } else if (!class_exists($this->findController($this->parameters[0]))) {
+        } else if ($this->parameters[0] == '') {
+            $this->controller = 'IndexController';
+        }
+
+         if (!class_exists($this->controller)) {
             $this->controller = "ErrorHandler";
             $this->action = "classNotFound";
             $this->error = 1;
-        } else if ($this->parameters[0] == '') {
-            $this->controller = 'IndexController';
         }
     }
 
@@ -62,9 +64,17 @@ class Router {
                     $this->action = $this->parameters[1];
                 } else if (!method_exists($this->controller, $this->parameters[1])) {
                     $this->error = 1;
+                    $this->controller = "ErrorHandler";
                     $this->action = "methodNotFound";
                 }
-            } else $this->action = 'index';
+            } else {
+                if (method_exists($this->controller, 'index')) {
+                    $this->action = 'index';
+                } else {
+                    $this->controller = "ErrorHandler";
+                    $this->action = "methodNotFound";
+                }
+            }
         }
     }
 
@@ -74,40 +84,6 @@ class Router {
                 $this->params = $this->parameters[2];
             }
         }
-    }
-
-    public function getParameters() //TODO Split into methods and add more checks!
-    {
-        $parameters = explode('/', $this->uri); //obtained the needed params, 0 is ctrl, 1 is action/method,
-        // 2 are the parameters.
-
-        $this->parameters = $parameters;
-
-        if ($parameters[0] == '') $this->controller = $this->findController('index');
-
-        if ($parameters[0] != '') {
-            $this->controller = $this->findController($parameters[0]);
-            if (!class_exists($this->controller)) {
-                $this->controller = "ErrorHandler";
-                $this->action = "classNotFound";
-            }
-        }
-
-        $this->action = 'index';
-        if (isset($parameters[1])) {
-            if (method_exists($this->controller, $parameters[1])) {
-                $this->action = $parameters[1];
-            } else {
-                $this->controller = "ErrorHandler";
-                $this->action = "methodNotFound";
-            }
-        }
-
-        if (isset($parameters[2])) {
-            $this->params = $parameters[2];
-        } else $this->params = '';
-
-
     }
 
     public function findController($string) {
