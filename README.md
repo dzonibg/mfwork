@@ -12,7 +12,7 @@ Errors.php - Framework error handling.
 
 Directory structure:
 
-/Framework - files essential to the FW
+ Framework - files essential to the FW
 
 * /Controllers - Where your controllers go
 * /Models - Where your models go and extend the Model class
@@ -22,4 +22,4 @@ Directory structure:
 To do:
 
 - Split Router actions, each parameter needs its own method.
-- 
+- Add Auth.

@@ -8,6 +8,13 @@ class Router {
     public $action;
     public $parameters;
     private $method;
+    public $params;
+    public $error = 0;
+
+    /* Router for the framework.
+     * First a new Router instance is created for a request, then:
+     * direct -> route -> getParameters | when finished, direct method uses the parameters and calls the ctrl+mthd.
+     */
 
     public function route() {
         /*
@@ -24,15 +31,50 @@ class Router {
         return trim($uri, '/');
     }
 
+    public function getRoute() {
+        $this->parameters = explode('/', $this->uri);
+        $this->controller = $this->getController();
+        $this->action = $this->getAction();
+        $this->params = $this->getParams();
+    }
+
+    public function getController() {
+        if (class_exists($this->findController($this->parameters[0]))) {
+            $this->controller = $this->findController($this->parameters[0]);
+        } else if (!class_exists($this->findController($this->parameters[0]))) {
+            $this->controller = "ErrorHandler";
+            $this->action = "classNotFound";
+            $this->error = 1;
+        } else if ($this->parameters[0] == '') {
+            $this->controller = 'IndexController';
+        }
+    }
+
+    public function getAction() {
+        if ($this->error != 1) {
+            if (method_exists($this->controller, $this->parameters[1])) {
+                $this->action = $this->parameters[1];
+            } else if (!method_exists($this->controller, $this->parameters[1])) {
+                $this->error = 1;
+                $this->action = "methodNotFound";
+            }
+        } else if ($this->parameters[1] == '') {
+            $this->action = 'index';
+        }
+    }
+
+    public function getParams() {
+        if ($this->parameters[2] != '') {
+            $this->params = $this->parameters[2];
+        }
+    }
+
     public function getParameters() //TODO Split into methods and add more checks!
     {
         $parameters = explode('/', $this->uri); //obtained the needed params, 0 is ctrl, 1 is action/method,
         // 2 are the parameters.
 
-        $this->parameters = $parameters; // In work, should be the end of getParameters and call assignments.
-        // getController;
-        // getAction;
-        // getParameters;
+        $this->parameters = $parameters;
 
         if ($parameters[0] == '') $this->controller = $this->findController('index');
 
@@ -55,8 +97,8 @@ class Router {
         }
 
         if (isset($parameters[2])) {
-            $this->parameters = $parameters[2];
-        } else $this->parameters = '';
+            $this->params = $parameters[2];
+        } else $this->params = '';
 
 
     }
@@ -67,8 +109,7 @@ class Router {
         */
         $string = ucfirst($string);
         $controller = $string . 'Controller';
-        $this->controller = $controller;
-        return $this->controller;
+        return $controller;
     }
 
     public function direct() {
@@ -81,14 +122,14 @@ class Router {
         if ($GLOBALS['debug']) {
             echo 'Controller: ' . $this->controller;
             echo ' Action: ' . $this->action;
-            echo ' Parameters: ' . $this->parameters;
+            echo ' Parameters: ' . $this->params;
             echo '<br>';
         }
 
         $controller =  $this->controller;
         $action = $this->action;
         $controller = new $controller;
-        $controller->$action($this->parameters);
+        $controller->$action($this->params);
     }
 
 }
