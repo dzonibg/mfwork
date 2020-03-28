@@ -73,6 +73,7 @@ class Router {
                 } else {
                     $this->controller = "ErrorHandler";
                     $this->action = "methodNotFound";
+                    $this->params = $this->findController($this->parameters[0]);
                 }
             }
         }
