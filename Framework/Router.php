@@ -11,7 +11,7 @@ class Router {
     public $params;
     public $error = 0;
 
-    /* Router for the framework.
+    /* Router for the framework. V2.0
      * First a new Router instance is created for a request, then:
      * direct -> route -> getParameters | when finished, direct method uses the parameters and calls the ctrl+mthd.
      *  direct calls route to get the method and parameters;
