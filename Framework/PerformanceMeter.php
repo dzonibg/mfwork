@@ -19,7 +19,8 @@ class PerformanceMeter {
         if ($GLOBALS['debug'] == true) {
             $this->end();
             $this->execution_time = ($this->time_end - $this->time_start) * 1000;
-            echo '<br>' . $this->execution_time . 'ms seconds exec time.';
+            echo '<br><span style="border: 1px solid brown">' . $this->execution_time . 'ms seconds exec time.';
+            echo '</span>';
         }
     }
 

@@ -30,6 +30,15 @@ class Model {
     }
 
     public function findById($id) {
-        return $this->db()->query("SELECT * FROM " . $this->tableName . " WHERE id=" . $id)->fetchAll();
+        return $this->db()->query("SELECT * FROM " . $this->tableName . " WHERE id=" . $id)->fetch();
+    }
+
+    public function findByParameter($parameter, $value) {
+        return $this->db()
+            ->query("SELECT * FROM " . $this->tableName . " WHERE " . $parameter . " = " . $value)->fetchAll();
+    }
+
+    public function insert($values) {
+        $this->db()->query("INSERT INTO " . $this->tableName . " VALUES " . $values)->execute();
     }
 }
