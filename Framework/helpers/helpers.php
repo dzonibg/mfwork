@@ -8,3 +8,9 @@ function view($viewName, $data = [], $extra = []) {
 function redirect($path) {
     header("Location:/" .$path);
 }
+
+function layout() {
+    if (file_exists("../Views/layout/layout.view.php")) {
+        return require_once "../Views/layout/layout.view.php";
+    }
+}

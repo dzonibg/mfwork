@@ -3,7 +3,7 @@
 class TestController {
 
     public function test() {
-        echo "Loaded Test Controller, and the method test.";
+        return view('test');
     }
 
     public function testdb() {

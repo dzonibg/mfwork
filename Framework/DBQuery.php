@@ -2,6 +2,8 @@
 
 class Model {
 
+    public $tableName;
+
     public function db()
     {
         $host = $GLOBALS['db_hostname'];

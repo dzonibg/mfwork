@@ -2,6 +2,7 @@
 /*APP:*/
 
 $GLOBALS['debug'] = true;
+$GLOBALS['layoutView'] = '';
 
 /*Database:*/
 $GLOBALS['db_hostname'] = 'localhost';
