@@ -24,4 +24,8 @@ class Model {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public function fetchAll() {
+        return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
+    }
 }

@@ -2,8 +2,8 @@
 
 class ErrorHandler {
 
-    public function methodNotFound($controller) {
-        echo "404 Framework - Method Not found in controller " . $controller;
+    public function methodNotFound($data) {
+        echo "404 Framework - Method  $data[2]  not found in controller " . $data[1];
     }
 
     public function classNotFound() {

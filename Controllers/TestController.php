@@ -13,4 +13,9 @@ class TestController {
             echo $user->id . $user->name . $user->password . $user->email;
         }
     }
+
+    public function fetch() {
+        $users = new Users();
+        var_dump($users->fetchAll());
+    }
 }

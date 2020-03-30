@@ -66,6 +66,8 @@ class Router {
                     $this->error = 1;
                     $this->controller = "ErrorHandler";
                     $this->action = "methodNotFound";
+                    $this->params[1] = $this->findController($this->parameters[0]);
+                    $this->params[2] = $this->parameters[1];
                 }
             } else {
                 if (method_exists($this->controller, 'index')) {
@@ -73,7 +75,8 @@ class Router {
                 } else {
                     $this->controller = "ErrorHandler";
                     $this->action = "methodNotFound";
-                    $this->params = $this->findController($this->parameters[0]);
+                    $this->params[1] = $this->findController($this->parameters[0]);
+                    $this->params[2] = "index";
                 }
             }
         }
@@ -104,10 +107,14 @@ class Router {
         $this->route();
 
         if ($GLOBALS['debug']) {
+            error_reporting(0);
+            echo '<span style="border: 1px solid firebrick">';
             echo 'Controller: ' . $this->controller;
             echo ' Action: ' . $this->action;
             echo ' Parameters: ' . $this->params;
             echo '<br>';
+            echo "</span>";
+            error_reporting(-1);
         }
 
         $action = $this->action;
