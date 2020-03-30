@@ -6,7 +6,7 @@ class Users extends Model {
 
     public function index()
     {
-        return $this->db()->query("SELECT * FROM test")->fetchAll();
+
     }
 
 }

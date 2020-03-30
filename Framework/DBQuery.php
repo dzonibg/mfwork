@@ -28,4 +28,8 @@ class Model {
     public function fetchAll() {
         return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
     }
+
+    public function findById($id) {
+        return $this->db()->query("SELECT * FROM " . $this->tableName . " WHERE id=" . $id)->fetchAll();
+    }
 }

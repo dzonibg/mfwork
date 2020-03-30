@@ -1,4 +1,10 @@
 <?php
+/*
+Load performance meter*/
+
+require_once '../Framework/PerformanceMeter.php';
+$performance = new PerformanceMeter();
+$performance->start();
 
 /*Load Config File*/
 require_once("../config.php");

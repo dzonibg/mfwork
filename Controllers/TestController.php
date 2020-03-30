@@ -16,6 +16,6 @@ class TestController {
 
     public function fetch() {
         $users = new Users();
-        var_dump($users->fetchAll());
+        var_dump($users->findById(1));
     }
 }
