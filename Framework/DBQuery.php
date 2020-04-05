@@ -3,6 +3,8 @@
 class Model {
 
     public $tableName;
+    public $keys;
+    public $values;
 
     public function db()
     {
@@ -39,6 +41,6 @@ class Model {
     }
 
     public function insert($values) {
-        $this->db()->query("INSERT INTO " . $this->tableName . " VALUES " . $values)->execute();
+        $this->db()->query("INSERT INTO " . $this->tableName . " VALUES (" . $values . ");");
     }
 }
