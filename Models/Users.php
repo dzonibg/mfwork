@@ -12,9 +12,5 @@ class Users extends Model {
     public $password;
     public $email;
 
-    public function index()
-    {
-
-    }
 
 }

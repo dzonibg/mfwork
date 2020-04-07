@@ -31,6 +31,10 @@ class Model {
         return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
     }
 
+    public function index() {
+        return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
+    }
+
     public function findById($id) {
         return $this->db()->query("SELECT * FROM " . $this->tableName . " WHERE id=" . $id)->fetch();
     }
@@ -54,8 +58,6 @@ class Model {
         }
         $this->keys = mb_substr($this->keys, 0, -2);
         $this->values = mb_substr($this->values, 0, -2);
-        print $this->keys;
-        print $this->values;
         $this->store();
     }
 
@@ -69,7 +71,10 @@ class Model {
 
     public function store() {
         $query = 'INSERT INTO ' . $this->tableName . ' (' . $this->keys . ')' . ' VALUES (' . $this->values . ');';
-        echo $query;
+
+        if ($GLOBALS['debug']) {
+        echo "SQL Query: " . $query;
+    }
         $this->db()->query($query);
 
     }

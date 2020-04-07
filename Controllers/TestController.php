@@ -1,6 +1,5 @@
 <?php
 
-
 class TestController {
 
     public function test() {
@@ -9,7 +8,7 @@ class TestController {
 
     public function testdb() {
         $users = new Users();
-        $data = $users->index();
+        $data = $users->fetchAll();
         foreach ($data as $user) {
             echo $user->id . $user->name . $user->password . $user->email;
         }
@@ -32,6 +31,10 @@ class TestController {
         $user->password = "New Password";
         $user->email = "new@email.com";
         $user->create($user);
+    }
+
+    public function request() {
+        echo request()->method();
     }
 
 }
