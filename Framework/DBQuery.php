@@ -1,10 +1,12 @@
 <?php
-
+require "DBQueryTraits.php";
 class Model {
 
+    use DBQueryTraits;
     public $tableName;
-    public $keys;
-    public $values;
+    private $keys;
+    private $values;
+    private $query;
 
     public function db()
     {
@@ -27,26 +29,16 @@ class Model {
         }
     }
 
-    public function fetchAll() {
-        return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
-    }
 
     public function index() {
         return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
     }
 
-    public function findById($id) {
-        return $this->db()->query("SELECT * FROM " . $this->tableName . " WHERE id=" . $id)->fetch();
-    }
-
-    public function findByParameter($parameter, $value) {
+    public function fastFindByParameter($parameter, $value) {
         return $this->db()
             ->query("SELECT * FROM " . $this->tableName . " WHERE " . $parameter . " = " . $value)->fetchAll();
     }
 
-    public function insert($values) {
-        $this->db()->query("INSERT INTO " . $this->tableName . " VALUES (" . $values . ");");
-    }
 
     public function create($object) {
         $array = (array)$object;
@@ -61,15 +53,15 @@ class Model {
         $this->store();
     }
 
-    public function addKey($key) {
+    private function addKey($key) {
         $this->keys = $this->keys . $key . ", ";
     }
 
-    public function addValue($value) {
+    private function addValue($value) {
         $this->values = $this->values . "'" . $value . "', ";
     }
 
-    public function store() {
+    private function store() { // called by create
         $query = 'INSERT INTO ' . $this->tableName . ' (' . $this->keys . ')' . ' VALUES (' . $this->values . ');';
 
         if ($GLOBALS['debug']) {
@@ -78,4 +70,14 @@ class Model {
         $this->db()->query($query);
 
     }
+
+    public function setQuery($query) {
+        $this->query = $query;
+        return $this;
+    }
+
+    public function showQuery() {
+        return $this->query;
+    }
+
 }

@@ -8,7 +8,7 @@ class TestController {
 
     public function testdb() {
         $users = new Users();
-        $data = $users->fetchAll();
+        $data = $users->getAll();
         foreach ($data as $user) {
             echo $user->id . $user->name . $user->password . $user->email;
         }
@@ -16,12 +16,12 @@ class TestController {
 
     public function fetch() {
         $users = new Users();
-        var_dump($users->findById(1));
+        var_dump($users->fastFinddById(1));
     }
 
     public function insert() {
         $user = new Users();
-        $user->insert("NULL, 'TestName', 'TestPass', 'testmail'");
+        $user->insert("name, password, email", "'Nikola', 'sifra', 'mejl'");
         echo "insert";
     }
 
@@ -35,6 +35,12 @@ class TestController {
 
     public function request() {
         echo request()->method();
+    }
+
+    public function trt() {
+        $user = new Users();
+        $u = $user->select()->orderBy('id', 'ASC')->getAll();
+        var_dump($u);
     }
 
 }
