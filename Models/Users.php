@@ -7,7 +7,7 @@ class Users extends Model {
         $this->tableName = "test";
     }
 
-    public $id = "NULL";
+    public $id = "";
     public $name;
     public $password;
     public $email;

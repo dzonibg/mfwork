@@ -8,9 +8,9 @@ class TestController {
 
     public function testdb() {
         $users = new Users();
-        $data = $users->getAll();
+        $data = $users->index();
         foreach ($data as $user) {
-            echo $user->id . $user->name . $user->password . $user->email;
+            echo $user->id . ' ' . $user->name . ' ' .  $user->password . ' ' . $user->email . br();
         }
     }
 
@@ -41,6 +41,14 @@ class TestController {
         $user = new Users();
         $u = $user->select()->orderBy('id', 'ASC')->getAll();
         var_dump($u);
+    }
+
+    public function novo() {
+        $noviKorisnik = new Users();
+        $noviKorisnik->name = "Ime";
+        $noviKorisnik->password = "Sifra";
+        $noviKorisnik->email = "Mejl";
+        $noviKorisnik->create();
     }
 
 }

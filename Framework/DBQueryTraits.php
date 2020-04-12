@@ -1,15 +1,14 @@
 <?php
 
-trait DBQueryTraits {
+trait DBExtends {
 
     /*
      *  Chainable methods, used to build a query.
      *  Set the query using setQuery().
+     *
+     *  Q U E R Y   S E T T E R S :
      */
 
-    public function find($id) {
-        return Model::setQuery("SELECT * FROM test WHERE id = {$id}");
-    }
 
     public function select() {
         Model::setQuery("SELECT * FROM {$this->tableName}");
@@ -26,18 +25,26 @@ trait DBQueryTraits {
         return $this;
     }
 
-    public function Ascending($field) {
+    public function asc($field) {
         Model::setQuery($this->query . " ORDER BY {$field} ASC");
         return $this;
     }
 
-    public function Descending($field) {
+    public function desc($field) {
         Model::setQuery($this->query . " ORDER BY {$field} DESC");
         return $this;
     }
 
+    public function limit($rows) {
+        Model::setQuery($this->query . " LIMIT {$rows}");
+        return $this;
+    }
+
+
     /*
+     *
      * Query getters:
+     *
     */
 
     public function get() {
@@ -48,9 +55,15 @@ trait DBQueryTraits {
         return Model::db()->query($this->query)->fetchAll();
     }
 
-    public function show() {
-        echo Model::showQuery();
+    public function first() {
+        Model::setQuery($this->query . " LIMIT 1");
+        return Model::db()->query($this->query)->fetch();
     }
+
+    public function find($id) {
+        return Model::db()->query("SELECT * FROM {$this->tableName} WHERE id = {$id}")->fetch();
+    }
+
 
     public function insert($keys, $values) {
         Model::db()->query("INSERT INTO {$this->tableName} ($keys) VALUES ($values)");

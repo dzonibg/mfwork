@@ -1,8 +1,10 @@
 <?php
 /*APP:*/
 
-$GLOBALS['debug'] = true;
+$GLOBALS['debug'] = false;
+$GLOBALS['bootstrap'] = true;
 $GLOBALS['layoutView'] = '';
+$GLOBALS['development'] = true;
 
 /*Database:*/
 $GLOBALS['db_hostname'] = 'localhost';

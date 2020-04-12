@@ -2,12 +2,14 @@
 require "DBQueryTraits.php";
 class Model {
 
-    use DBQueryTraits;
-    public $tableName;
+    use DBExtends;
+    protected $tableName;
     private $keys;
     private $values;
     private $query;
-
+/*
+ *  PDO CLASS
+ */
     public function db()
     {
         $host = $GLOBALS['db_hostname'];
@@ -28,22 +30,32 @@ class Model {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
     }
-
+/*
+ *
+ *  QUERIES
+ *
+ */
 
     public function index() {
         return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
     }
 
-    public function fastFindByParameter($parameter, $value) {
+    public function all() {
+        return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
+    }
+
+    public function FindByParameter($parameter, $value) {
         return $this->db()
             ->query("SELECT * FROM " . $this->tableName . " WHERE " . $parameter . " = " . $value)->fetchAll();
     }
 
 
     public function create($object) {
-        $array = (array)$object;
+//        $array = (array)$object;
+        $array = get_object_vars($object);
         foreach ($array as $key => $value) {
-            if (($key != "tableName") && ($key != 'values') && ($key != 'keys') && ($key != 'id')) {
+//            if (($key != "tableName") && ($key != 'values') && ($key != 'keys') && ($key != 'id') && ($key != 'query')) {
+                if (($key != "tableName") && ($key != 'values') && ($key != 'keys') && ($key != 'query')) {
                 $this->addKey($key);
                 $this->addValue($value);
             }
@@ -53,12 +65,17 @@ class Model {
         $this->store();
     }
 
-    private function addKey($key) {
+    private function addKey($key)
+    {
         $this->keys = $this->keys . $key . ", ";
     }
 
     private function addValue($value) {
-        $this->values = $this->values . "'" . $value . "', ";
+        if ($value != NULL) {
+            $this->values = $this->values . "'" . $value . "', ";
+        } else {
+            $this->values = $this->values . 'NULL, ';
+        }
     }
 
     private function store() { // called by create
