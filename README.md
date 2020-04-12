@@ -34,3 +34,5 @@ Todo:
 - ORM Model linking? *
 - File upload and functions.
 - CRUD for FW options, or CLI.
+
+- Router 3.0 with route definitions later.
