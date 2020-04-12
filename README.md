@@ -2,11 +2,12 @@ MFwork - Simple PHP MVC Framework.
 
 ---
 
-Router.php - handles the routing.
+Features:
 
-DBQuery.php - handles the DB connection.
-
-Errors.php - Framework error handling.
+- ORM
+- Auth
+- Bootstrap 4 bundled
+- MVC
 
 ---
 
@@ -19,7 +20,17 @@ Directory structure:
 * /Views - Where your frontend goes.
 
 --- 
-To do:
+Done:
 
 - Split Router actions, each parameter needs its own method.
 - Add Auth.
+
+Todo:
+
+- Advanced auth.
+- Migrations? Look under: *
+- Management page for models.
+- More ORM methods.
+- ORM Model linking? *
+- File upload and functions.
+- CRUD for FW options, or CLI.
