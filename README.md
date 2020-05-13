@@ -23,3 +23,5 @@ To do:
 
 - Split Router actions, each parameter needs its own method.
 - Add Auth.
+- Add model linking.
+- Fix chaining for db class.
