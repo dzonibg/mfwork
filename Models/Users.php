@@ -4,10 +4,10 @@ class Users extends Model {
 
     public function __construct()
     {
-        $this->tableName = "test";
+        $this->tableName = "users";
     }
 
-    public $id = "NULL";
+    public $id;
     public $name;
     public $password;
     public $email;
