@@ -2,6 +2,8 @@
 /*
 Load performance meter*/
 
+use Framework\PerformanceMeter;
+
 require_once '../Framework/PerformanceMeter.php';
 $performance = new PerformanceMeter();
 $performance->start();

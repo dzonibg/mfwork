@@ -1,5 +1,7 @@
 <?php
 
+namespace Framework;
+
 class Request {
 
     public function __construct()

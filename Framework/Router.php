@@ -1,5 +1,9 @@
 <?php
 
+namespace Framework;
+
+use Framework\ErrorHandler;
+
 class Router {
 
     public $request;
@@ -46,7 +50,7 @@ class Router {
         if (class_exists($this->findController($this->parameters[0]))) {
             $this->controller = $this->findController($this->parameters[0]);
         } else if ($this->parameters[0] == '') {
-            $this->controller = 'IndexController';
+            $this->controller = 'Controllers\IndexController';
         }
 
          if (!class_exists($this->controller)) {
@@ -64,7 +68,7 @@ class Router {
                     $this->action = $this->parameters[1];
                 } else if (!method_exists($this->controller, $this->parameters[1])) {
                     $this->error = 1;
-                    $this->controller = "ErrorHandler";
+                    $this->controller = "Framework\ErrorHandler";
                     $this->action = "methodNotFound";
                     $this->params[1] = $this->findController($this->parameters[0]);
                     $this->params[2] = $this->parameters[1];
@@ -73,7 +77,7 @@ class Router {
                 if (method_exists($this->controller, 'index')) {
                     $this->action = 'index';
                 } else {
-                    $this->controller = "ErrorHandler";
+                    $this->controller = "Framework\ErrorHandler";
                     $this->action = "methodNotFound";
                     $this->params[1] = $this->findController($this->parameters[0]);
                     $this->params[2] = "index";
@@ -95,7 +99,7 @@ class Router {
         Method used to get a controller based on the URI.
         */
         $string = ucfirst($string);
-        $controller = $string . 'Controller';
+        $controller = "Controllers\\" . $string . 'Controller';
         return $controller;
     }
 
@@ -119,7 +123,12 @@ class Router {
 
         $action = $this->action;
         $controller = $this->controller;
-        $controller = new $controller;
+
+        if ($controller ==='ErrorHandler') {
+            $controller = new ErrorHandler();
+        } else {
+            $controller = new $controller;
+        }
         $controller->$action($this->params);
     }
 

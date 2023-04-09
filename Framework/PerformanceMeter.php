@@ -1,6 +1,6 @@
 <?php
 
-//namespace Framework;
+namespace Framework;
 
 class PerformanceMeter {
     public $time_start;
