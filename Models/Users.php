@@ -1,5 +1,7 @@
 <?php
 
+use Framework\Model;
+
 class Users extends Model {
 
     public function __construct()

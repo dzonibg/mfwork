@@ -1,5 +1,6 @@
 <?php
 
+//namespace Framework;
 class ErrorHandler {
 
     public function methodNotFound($data) {

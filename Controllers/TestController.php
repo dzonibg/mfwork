@@ -10,7 +10,7 @@ class TestController {
         $users = new Users();
         $data = $users->fetchAll();
         foreach ($data as $user) {
-            echo $user->id . $user->name . $user->password . $user->email;
+            echo "$user->id  $user->name\n";
         }
     }
 
@@ -21,7 +21,7 @@ class TestController {
 
     public function insert() {
         $user = new Users();
-        $user->insert("NULL, 'TestName', 'TestPass', 'testmail'");
+        $user->insert("DEFAULT, 'TestName'");
         echo "insert";
     }
 

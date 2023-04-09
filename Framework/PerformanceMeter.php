@@ -1,5 +1,7 @@
 <?php
 
+//namespace Framework;
+
 class PerformanceMeter {
     public $time_start;
     public $time_end;
