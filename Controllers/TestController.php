@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Models\Users;
+
 class TestController {
 
     public function test() {

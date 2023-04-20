@@ -2,7 +2,8 @@
   "autoload": {
     "psr-4": {
       "Framework\\": "Framework/",
-      "Controllers\\": "Controllers/"
+      "Controllers\\": "Controllers/",
+      "Models\\": "Models/"
     }
   },
   "require": {

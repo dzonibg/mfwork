@@ -4,6 +4,10 @@ Load performance meter*/
 
 use Framework\PerformanceMeter;
 
+/*
+ * Old Framework autoloader. Used requires instead of autoloading via PSR4/composer.
+ */
+
 require_once '../Framework/PerformanceMeter.php';
 $performance = new PerformanceMeter();
 $performance->start();

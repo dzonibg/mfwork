@@ -1,5 +1,6 @@
 <?php
 
+namespace Models;
 use Framework\Model;
 
 class Users extends Model {
