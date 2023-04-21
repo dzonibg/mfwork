@@ -14,7 +14,7 @@ class TestController {
         $users = new Users();
         $data = $users->fetchAll();
         foreach ($data as $user) {
-            echo "$user->id  $user->name\n";
+            echo "<p>$user->id - $user->name</p>";
         }
     }
 
