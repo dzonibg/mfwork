@@ -28,4 +28,11 @@ class DatabaseConnector {
         }
     }
 
+    protected function prepareQuery($query, $keyValueArray) {
+        $statement = $this->db()->prepare($query);
+        $result = $statement->execute($keyValueArray);
+
+        return $statement;
+    }
+
 }

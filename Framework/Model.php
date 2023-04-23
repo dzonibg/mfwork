@@ -3,13 +3,17 @@
 namespace Framework;
 
 use PDO;
-use Framework\DatabaseConnector;
 
-class Model extends DatabaseConnector {
+abstract class Model extends DatabaseConnector {
 
     public $tableName;
     public $keys;
     public $values;
+    protected $columns;
+
+    public function __construct() {
+        $this->columns = [];
+    }
 
     public function fetchAll() {
         return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
@@ -20,12 +24,26 @@ class Model extends DatabaseConnector {
     }
 
     public function findById($id) {
-        return $this->db()->query("SELECT * FROM " . $this->tableName . " WHERE id=" . $id)->fetch();
+        $query = "SELECT * FROM  $this->tableName WHERE id= :id";
+
+        $sql = $this->prepareQuery($query, [
+            'id' => $id
+        ]);
+        return $sql->fetch();
     }
 
-    public function findByParameter($parameter, $value) {
-        return $this->db()
-            ->query("SELECT * FROM " . $this->tableName . " WHERE " . $parameter . " = " . $value)->fetchAll();
+    public function findByParameter($parameter, $value): array {
+
+        if (in_array($parameter, $this->columns)) {
+
+        $query = "SELECT * FROM $this->tableName WHERE $parameter = :value";
+        $sql = $this->prepareQuery($query, [
+            'value' => $value
+        ]);
+        return $sql->fetchAll();
+    }
+        else throw new \Exception("Parameter doesn't exist!");
+        // will refactor to caught exceptions
     }
 
     public function insert($values) {

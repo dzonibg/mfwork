@@ -20,7 +20,7 @@ class TestController {
 
     public function fetch() {
         $users = new Users();
-        var_dump($users->findById(1));
+        var_dump($users->findByParameter('id', 1));
     }
 
     public function insert() {
