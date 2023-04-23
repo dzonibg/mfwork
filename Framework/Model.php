@@ -72,7 +72,8 @@ abstract class Model extends DatabaseConnector {
     }
 
     public function store() {
-        $query = 'INSERT INTO ' . $this->tableName . ' (' . $this->keys . ')' . ' VALUES (' . $this->values . ');';
+        $query = "INSERT INTO $this->tableName ($this->keys) VALUES ($this->values);";
+        //find a way to prep this!
 
         if ($GLOBALS['debug']) {
         echo "SQL Query: " . $query;
