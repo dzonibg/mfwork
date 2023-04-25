@@ -32,8 +32,12 @@ class TestController {
     public function create() {
         $user = new Users();
         $user->name = "New Name";
-        $user->email = "new@user.com";
-        $user->create($user);
+        echo $user->create($user);
+    }
+
+    public function deleteall() {
+        $users = new Users();
+        $users->deleteAll();
     }
 
     public function request() {

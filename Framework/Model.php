@@ -6,34 +6,48 @@ use PDO;
 
 abstract class Model extends DatabaseConnector {
 
-    public $tableName;
-    public $keys;
-//    public $values;
-    public $serializedValues;
-    public $serializedValuePreparations;
-    protected array $keyValuePairs;
-    protected array $preparedKeyValuePairs;
-    protected $columns;
+    public string $tableName;
+    public string $keys = "";
+    public string $values = "";
+    public string $serializedValues = "";
+    public string $serializedValuePreparations = "";
+    protected array $keyValuePairs = [];
+    protected array $preparedKeyValuePairs = [];
+    protected array $columns = [];
 
     public function __construct() {
         $this->columns = [];
     }
 
-    public function fetchAll() {
-        return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
+    public function fetchAll(): array {
+        return $this->db()->query("SELECT * FROM $this->tableName")->fetchAll();
     }
 
-    public function index() {
-        return $this->db()->query("SELECT * FROM " . $this->tableName)->fetchAll();
+    public function index(): array {
+        return $this->db()->query("SELECT * FROM $this->tableName")->fetchAll();
     }
 
-    public function findById($id) {
+    public function findById($id): array {
         $query = "SELECT * FROM  $this->tableName WHERE id= :id";
 
         $sql = $this->prepareQuery($query, [
             'id' => $id
         ]);
         return $sql->fetch();
+    }
+
+    public function delete($id): bool {
+        $query = "DELETE FROM $this->tableName WHERE id = :id";
+        $sql = $this->prepareQuery($query, [
+            'id' => $id
+        ]);
+        return $sql->execute();
+    }
+
+    public function deleteAll(): bool {
+        $query = "DELETE FROM $this->tableName";
+        $sql = $this->prepareQuery($query, null);
+        return $sql->execute();
     }
 
     public function findByParameter($parameter, $value): array {
@@ -54,7 +68,7 @@ abstract class Model extends DatabaseConnector {
         $this->db()->query("INSERT INTO " . $this->tableName . " VALUES (" . $values . ");");
     }
 
-    public function create($object) {
+    public function create($object):int {
         $array = (array)$object;
         foreach ($array as $key => $value) {
             if
@@ -75,30 +89,27 @@ abstract class Model extends DatabaseConnector {
         $this->keys = mb_substr($this->keys, 0, -2);
         $this->serializedValues = mb_substr($this->serializedValues, 0, -2);
         $this->serializedValuePreparations = mb_substr($this->serializedValuePreparations, 0, -2);
-        var_dump("---");
-        $this->store();
+
+        return $this->store();
     }
 
-    public function addKey($key) {
+    public function addKey($key):void {
         $this->keys = $this->keys . $key . ", ";
         $this->serializedValuePreparations = $this->serializedValuePreparations . ":$key, ";
     }
 
-    public function addValue($value) {
+    public function addValue($value): void {
         $this->serializedValues = $this->serializedValues . "'" . $value . "', ";
     }
 
-    public function store() {
-//        $query = "INSERT INTO $this->tableName ($this->keys) VALUES ($this->serializedValues);";
-
+    public function store(): int {
         $query = "INSERT INTO $this->tableName ($this->keys) VALUES ($this->serializedValuePreparations)";
         $sql = $this->prepareQuery($query, $this->keyValuePairs);
 
         if ($GLOBALS['debug']) {
         echo "SQL Query: " . $query;
     }
-
-        return $sql->execute();
+        return $sql->rowCount();
 
     }
 }
