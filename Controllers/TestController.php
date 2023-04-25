@@ -14,7 +14,7 @@ class TestController {
         $users = new Users();
         $data = $users->fetchAll();
         foreach ($data as $user) {
-            echo "<p>$user->id - $user->name</p>";
+            echo "<p>$user->id - $user->name - $user->email</p>";
         }
     }
 
@@ -32,8 +32,7 @@ class TestController {
     public function create() {
         $user = new Users();
         $user->name = "New Name";
-        $user->password = "New Password";
-        $user->email = "new@email.com";
+        $user->email = "new@user.com";
         $user->create($user);
     }
 

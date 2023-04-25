@@ -14,3 +14,14 @@ function layout() {
         return require_once "../Views/layout/layout.view.php";
     }
 }
+
+function dd(...$data) {
+    echo "<pre>";
+
+    foreach ($data as $datum) {
+        var_dump($datum);
+    }
+
+    echo "</pre>";
+    die();
+}

@@ -8,7 +8,11 @@ abstract class Model extends DatabaseConnector {
 
     public $tableName;
     public $keys;
-    public $values;
+//    public $values;
+    public $serializedValues;
+    public $serializedValuePreparations;
+    protected array $keyValuePairs;
+    protected array $preparedKeyValuePairs;
     protected $columns;
 
     public function __construct() {
@@ -53,32 +57,48 @@ abstract class Model extends DatabaseConnector {
     public function create($object) {
         $array = (array)$object;
         foreach ($array as $key => $value) {
-            if (($key != "tableName") && ($key != 'values') && ($key != 'keys') && ($key != 'id')) {
+            if
+            (($key != "tableName") && ($key != 'values')
+                && ($key != 'keys') && ($key != 'id')
+                && ($key != 'serializedValues') && ($key != ':serializedValuePreparations')
+                && ($value != ':serializedValuePreparations')
+                && ($value != 'serializedValuePreparations')
+                && ($key != 'serializedValuePreparations')
+                &&  !is_array($key) && !is_array($value))
+            {
                 $this->addKey($key);
                 $this->addValue($value);
+                $this->preparedKeyValuePairs[":$key"] = $value;
+                $this->keyValuePairs[$key] = $value;
             }
         }
         $this->keys = mb_substr($this->keys, 0, -2);
-        $this->values = mb_substr($this->values, 0, -2);
+        $this->serializedValues = mb_substr($this->serializedValues, 0, -2);
+        $this->serializedValuePreparations = mb_substr($this->serializedValuePreparations, 0, -2);
+        var_dump("---");
         $this->store();
     }
 
     public function addKey($key) {
         $this->keys = $this->keys . $key . ", ";
+        $this->serializedValuePreparations = $this->serializedValuePreparations . ":$key, ";
     }
 
     public function addValue($value) {
-        $this->values = $this->values . "'" . $value . "', ";
+        $this->serializedValues = $this->serializedValues . "'" . $value . "', ";
     }
 
     public function store() {
-        $query = "INSERT INTO $this->tableName ($this->keys) VALUES ($this->values);";
-        //find a way to prep this!
+//        $query = "INSERT INTO $this->tableName ($this->keys) VALUES ($this->serializedValues);";
+
+        $query = "INSERT INTO $this->tableName ($this->keys) VALUES ($this->serializedValuePreparations)";
+        $sql = $this->prepareQuery($query, $this->keyValuePairs);
 
         if ($GLOBALS['debug']) {
         echo "SQL Query: " . $query;
     }
-        $this->db()->query($query);
+
+        return $sql->execute();
 
     }
 }
