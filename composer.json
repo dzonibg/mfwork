@@ -3,7 +3,8 @@
     "psr-4": {
       "Framework\\": "Framework/",
       "Controllers\\": "Controllers/",
-      "Models\\": "Models/"
+      "Models\\": "Models/",
+      "Commands\\": "Commands/"
     }
   },
   "require": {

@@ -1,0 +1,16 @@
+<?php
+
+/*
+ *  This ain't really OOP so we'll have to load the files via require.
+ *  It's a CLI tool to run the Commander class and execute frameworks
+ *  functions, such as migration running, controller creation, etc.
+ */
+
+require __DIR__.'/vendor/autoload.php';
+
+/*
+ *  Here we just initialize the class so we can continue to do stuff
+ *  the OOP way.
+ */
+
+$commander = new \Framework\Commander();

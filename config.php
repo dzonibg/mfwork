@@ -1,5 +1,8 @@
 <?php
-/*APP:*/
+
+/*
+ *  Will switch to DEFINE or env parsing at one point.
+ */
 
 $GLOBALS['debug'] = true;
 $GLOBALS['layoutView'] = '';
