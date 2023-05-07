@@ -1,8 +1,9 @@
 <?php
 
 namespace Commands;
+use Framework\Commander;
 
-class Command {
+class Command extends Commander {
 
     /*
      * Placeholder for now.

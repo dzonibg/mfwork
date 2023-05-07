@@ -13,4 +13,7 @@ require __DIR__.'/vendor/autoload.php';
  *  the OOP way.
  */
 
-$commander = new \Framework\Commander();
+$arguments = $argv;
+unset($arguments[0]);
+
+$commander = new \Framework\Commander($arguments);
